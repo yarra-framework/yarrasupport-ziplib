@@ -1,6 +1,7 @@
 # Final names of binaries
 EXECUTABLE = Bin/zipsample
 SO_LIBRARY = Bin/libzip.so
+STATIC_LIBRARY = Bin/libzip.a
 
 # C & C++ compiler
 #CC       = gcc
@@ -31,13 +32,16 @@ OBJS = \
 		$(SRC_BZIP2:.c=.o)
 
 # Rules
-all: $(EXECUTABLE) $(SO_LIBRARY)
+all: $(EXECUTABLE) $(SO_LIBRARY) $(STATIC_LIBRARY)
 
 $(EXECUTABLE): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) Source/Sample/Main.cpp -o $@ $^
 
 $(SO_LIBRARY): $(OBJS)
 	$(CXX) $(LDFLAGS) -shared -o $@ $^
+
+$(STATIC_LIBRARY): $(OBJS)
+	ar rcs $@ $^
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
@@ -46,7 +50,9 @@ $(SO_LIBRARY): $(OBJS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -rf `find Source -name '*.o'` ziplib.tar.gz Bin/*.zip Bin/out* $(EXECUTABLE) $(SO_LIBRARY)
+	rm -rf `find Source -name '*.o'` ziplib.tar.gz Bin/*.zip Bin/out* $(EXECUTABLE) $(SO_LIBRARY) $(STATIC_LIBRARY)
+
+re: clean all
 
 tarball:
 	tar -zcvf ziplib.tar.gz *
