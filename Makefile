@@ -6,8 +6,8 @@ STATIC_LIBRARY = Bin/libzip.a
 # C & C++ compiler
 #CC       = gcc
 #CXX      = g++-4.8
-CC        = clang
-CXX       = clang++
+#CC        = clang
+#CXX       = clang++
 CFLAGS    = -fPIC -Wno-enum-conversion -O3
 CXXFLAGS  = -fPIC -std=c++11 -O3
 
